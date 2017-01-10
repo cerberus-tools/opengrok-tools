@@ -6,8 +6,7 @@ node('master'){
     PROJECT_DIRECTORY =  SRC_ROOT + "/" + PROJECT_NAME
     echo "INFO: Project directory = " + PROJECT_DIRECTORY
     //sh 'cd ~/temp && git clone -b @drd4tv ssh://wall.lge.com/starfish/build-starfish'
-    project_dir = new File(PROJECT_DIRECTORY)
-    if ( project_dir.exits() ) {
+    if ( fileExists(PROJECT_DIRECTORY) ) {
         echo "INFO: Exist = " + PROJECT_DIRECTORY
     } else {
         echo "INFO: Dont' exist = " + PROJECT_DIRECTORY
