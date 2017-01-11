@@ -3,8 +3,8 @@ import os
 import sys
 import subprocess
 
-opengrok_instance_home = "/vol/users/gatekeeper.tvsw/temp/opengrok-opengrok-starfish-drd4tv"
-script_directory = "/vol/users/gatekeeper.tvsw/program/opengrok-main"
+opengrok_instance_home = os.environ['OPENGROK_INSTANCE_HOME']
+script_directory = os.environ['SCRIPT_DIRECTORY']
 
 build_images = {
         "m16p": "starfish-atsc-flash starfish-arib-flash starfish-dvb-flash",
@@ -41,6 +41,9 @@ if __name__ ==  "__main__":
         subprocess.check_call("git clone -b @{} ssh://wall.lge.com/starfish/build-starfish {}".format(build_branch, project_directory), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     # Run mcf command
+    print("cd {} && {}".format(project_directory, mcf_command))
     subprocess.check_call("cd {} && {}".format(project_directory, mcf_command), shell=True)
-    subprocess.check_call("cd {} && {}".format(project_directory, build_command), shell=True)
+    # Run build command
+    #print("cd {} && {}".format(project_directory, build_command))
+    #subprocess.check_call("cd {} && {}".format(project_directory, build_command), shell=True)
 
