@@ -44,6 +44,6 @@ if __name__ ==  "__main__":
     print("cd {} && {}".format(project_directory, mcf_command))
     subprocess.check_call("cd {} && {}".format(project_directory, mcf_command), shell=True)
     # Run build command
-    #print("cd {} && {}".format(project_directory, build_command))
-    #subprocess.check_call("cd {} && {}".format(project_directory, build_command), shell=True)
+    print("cd {} && {}".format(project_directory, build_command))
+    subprocess.check_call("cd {} && {}".format(project_directory, build_command), shell=True)
 
