@@ -39,5 +39,8 @@ if __name__ ==  "__main__":
         subprocess.check_call("rm -rf " + project_directory, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         # 29         sh "git clone -b @drd4tv ssh://wall.lge.com/starfish/build-starfish " + PROJECT_DIRECTORY
         subprocess.check_call("git clone -b @{} ssh://wall.lge.com/starfish/build-starfish {}".format(build_branch, project_directory), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    # Run mcf command
     subprocess.check_call("cd {} && {}".format(project_directory, mcf_command), shell=True)
+    subprocess.check_call("cd {} && {}".format(project_directory, build_command), shell=True)
 
