@@ -4,6 +4,7 @@ job_name=(${BUILD_NAME//-/ })
 BUILD_BRANCH=${job_name[1]}
 BUILD_MACHINE=${job_name[2]}
 BUILD_IMAGES="starfish-atsc-flash"
+BUILD_REPO_URL="ssh://gpro.lgsvl.com/starfish/build-starfish"
 
 # Set BUILD_IMAGES
 case ${BUILD_MACHINE} in
@@ -32,7 +33,13 @@ DATA_ROOT="${OPENGROK_INSTANCE_HOME}/data"
 PROJECT_DIRECTORY="${SRC_ROOT}/${BUILD_NAME}"
 #BUILD_COMMAND=". ./oe-init-build-env & bitbake -c patchall ${BUILD_IMAGES}"
 BUILD_COMMAND="bitbake -c patchall ${BUILD_IMAGES}"
+if [ ! "${BUILD_BRANCH}" = "master" ]; then
+    BUILD_BRANCH="@${BUILD_BRANCH}"
+    BUILD_REPO_URL="ssh://wall.lge.com/starfish/build-starfish"
+fi
 MCF_COMMAND=""
+echo ${BUILD_BRANCH}
+echo ${BUILD_REPO_URL}
 
 if [ -f "${PROJECT_DIRECTORY}/mcf.status" ]; then
     echo "INFO: Exist = ${PROJECT_DIRECTORY}/mcf.status"
@@ -41,7 +48,7 @@ else
     echo "INFO: New Build Triggered"
     MCF_COMMAND="./mcf -b 44 -p 44 ${BUILD_MACHINE} --premirror=file:///starfish/starfish/dreadlocks/downloads"
     rm -rf ${PROJECT_DIRECTORY}
-    git clone -b "@${BUILD_BRANCH}" ssh://wall.lge.com/starfish/build-starfish ${PROJECT_DIRECTORY}  
+    git clone -b "${BUILD_BRANCH}" ${BUILD_REPO_URL} ${PROJECT_DIRECTORY}
 fi
 pushd ${PROJECT_DIRECTORY}
 ${MCF_COMMAND}
