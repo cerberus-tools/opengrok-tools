@@ -24,6 +24,9 @@ case ${BUILD_MACHINE} in
     k3lp)
         BUILD_IMAGES="starfish-arib-flash starfish-dvb-flash"
         ;;
+    qemux86)
+        BUILD_IMAGES="starfish-image"
+        ;;
     *)
         BUILD_IMAGES="starfish-atsc-flash"
         ;;
