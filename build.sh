@@ -71,6 +71,6 @@ fi
 pushd ${PROJECT_DIRECTORY}
 ${MCF_COMMAND}
 . ./oe-init-build-env
-${BUILD_COMMAND}
+LC_ALL="en_US.UTF-8" ${BUILD_COMMAND}
 
 set +x
