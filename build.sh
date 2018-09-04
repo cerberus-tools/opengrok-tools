@@ -9,8 +9,18 @@ BUILD_PLATFORM="master"
 
 # Set BUILD_IMAGES
 case ${BUILD_MACHINE} in
-    m16p|m16)
-        BUILD_IMAGES="starfish-atsc-flash starfish-arib-flash starfish-dvb-flash"        
+    m16pp|m16p)
+        BUILD_IMAGES="starfish-atsc-flash starfish-arib-flash starfish-dvb-flash"
+        BUILD_IMAGES+=" starfish-atsc-flash-devel starfish-arib-flash-devel starfish-dvb-flash-devel"
+        ;;
+    m16p3|o18)
+        if [ "${BUILD_BRANCH}" = "gld4tv" ]; then
+          BUILD_IMAGES="lib32-starfish-atsc-flash lib32-starfish-arib-flash lib32-starfish-dvb-flash"
+          BUILD_IMAGES+=" lib32-starfish-atsc-flash-devel lib32-starfish-arib-flash-devel lib32-starfish-dvb-flash-devel"
+        else
+          BUILD_IMAGES="starfish-atsc-flash starfish-arib-flash starfish-dvb-flash"
+          BUILD_IMAGES+=" starfish-atsc-flash-devel starfish-arib-flash-devel starfish-dvb-flash-devel"
+        fi
         ;;
     m16pbno)
         BUILD_IMAGES="starfish-dvb-flash"
