@@ -56,6 +56,9 @@ case ${BUILD_BRANCH} in
     drd4tv|*dixie*)    
         BUILD_PLATFORM="dreadlocks"
         ;;
+    g*)
+        BUILD_PLATFORM="gld"
+        ;;
 esac
 
 
@@ -79,6 +82,7 @@ else
     git clone -b "${BUILD_BRANCH}" ${BUILD_REPO_URL} ${PROJECT_DIRECTORY}
 fi
 pushd ${PROJECT_DIRECTORY}
+git fetch origin && git reset --hard origin/${BUILD_BRANCH}
 ${MCF_COMMAND}
 . ./oe-init-build-env
 LC_ALL="en_US.UTF-8" ${BUILD_COMMAND}
