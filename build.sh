@@ -6,7 +6,7 @@ BUILD_MACHINE=${job_name[2]}
 BUILD_IMAGES="starfish-atsc-flash"
 BUILD_REPO_URL="ssh://gpro.lgsvl.com/starfish/build-starfish"
 BUILD_PLATFORM="master"
-
+BUILD_CON_NAME="ubuntu-1404"
 # Set BUILD_IMAGES
 case ${BUILD_MACHINE} in
     m16pp|m16p)
@@ -17,6 +17,7 @@ case ${BUILD_MACHINE} in
         if [ "${BUILD_BRANCH}" = "gld4tv" ]; then
           BUILD_IMAGES="lib32-starfish-atsc-flash lib32-starfish-arib-flash lib32-starfish-dvb-flash"
           BUILD_IMAGES+=" lib32-starfish-atsc-flash-devel lib32-starfish-arib-flash-devel lib32-starfish-dvb-flash-devel"
+          BUILD_CON_NAME="ubuntu-1804"
         else
           BUILD_IMAGES="starfish-atsc-flash starfish-arib-flash starfish-dvb-flash"
           BUILD_IMAGES+=" starfish-atsc-flash-devel starfish-arib-flash-devel starfish-dvb-flash-devel"
@@ -42,6 +43,7 @@ case ${BUILD_MACHINE} in
         ;;
 esac
 set -x
+BUILD_CON_IP=`sudo lxc-info -n ${BUILD_CON_NAME} -i -H`
 SRC_ROOT="${OPENGROK_INSTANCE_HOME}/src"
 DATA_ROOT="${OPENGROK_INSTANCE_HOME}/data"
 PROJECT_DIRECTORY="${SRC_ROOT}/${BUILD_NAME}"
@@ -55,6 +57,9 @@ case ${BUILD_BRANCH} in
         ;;
     drd4tv|*dixie*)    
         BUILD_PLATFORM="dreadlocks"
+        ;;
+    j*)
+        BUILD_PLATFORM="jcl"
         ;;
     g*)
         BUILD_PLATFORM="gld"
@@ -81,10 +86,14 @@ else
     rm -rf ${PROJECT_DIRECTORY}
     git clone -b "${BUILD_BRANCH}" ${BUILD_REPO_URL} ${PROJECT_DIRECTORY}
 fi
+cat << EOF >> ${PROJECT_DIRECTORY}/build_opengrok.sh
+#!/bin/bash
 pushd ${PROJECT_DIRECTORY}
 git fetch origin && git reset --hard origin/${BUILD_BRANCH}
 ${MCF_COMMAND}
 . ./oe-init-build-env
 LC_ALL="en_US.UTF-8" ${BUILD_COMMAND}
-
+EOF
+chmod +x ${PROJECT_DIRECTORY}/build_opengrok.sh
+ssh ${BUILD_CON_IP} ${PROJECT_DIRECTORY}/build_opengrok.sh
 set +x
