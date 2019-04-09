@@ -90,9 +90,9 @@ cat << EOF >> ${PROJECT_DIRECTORY}/build_opengrok.sh
 #!/bin/bash
 pushd ${PROJECT_DIRECTORY}
 git fetch origin && git reset --hard origin/${BUILD_BRANCH}
-${MCF_COMMAND}
-. ./oe-init-build-env
-LC_ALL="en_US.UTF-8" ${BUILD_COMMAND}
+#${MCF_COMMAND}
+#. ./oe-init-build-env
+#LC_ALL="en_US.UTF-8" ${BUILD_COMMAND}
 EOF
 chmod +x ${PROJECT_DIRECTORY}/build_opengrok.sh
 ssh ${BUILD_CON_IP} ${PROJECT_DIRECTORY}/build_opengrok.sh
